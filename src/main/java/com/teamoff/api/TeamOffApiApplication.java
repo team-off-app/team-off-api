@@ -1,0 +1,13 @@
+package com.teamoff.api;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class TeamOffApiApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(TeamOffApiApplication.class, args);
+	}
+
+}
