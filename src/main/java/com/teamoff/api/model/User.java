@@ -1,7 +1,10 @@
 package com.teamoff.api.model;
 
+import com.teamoff.api.dto.create.CreateUserDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 import java.util.UUID;
@@ -9,6 +12,8 @@ import java.util.UUID;
 @Entity(name = "User")
 @Table(name = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -23,5 +28,10 @@ public class User {
     joinColumns = @JoinColumn(name = "team_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<Team> team;
+
+    public User(CreateUserDTO data) {
+        this.username = data.username();
+        this.photoUrl = data.photoUrl();
     }
+}
 
