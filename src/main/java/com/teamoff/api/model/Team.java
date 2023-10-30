@@ -22,10 +22,6 @@ public class Team {
     @Column(unique = true ,nullable = false)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private Set<User> user;
-
-    public Team(String team, UUID id) {
-
-    }
 }

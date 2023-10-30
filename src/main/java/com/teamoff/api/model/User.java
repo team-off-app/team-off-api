@@ -23,10 +23,15 @@ public class User {
     private String username;
     private String photoUrl;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "team_user",
-    joinColumns = @JoinColumn(name = "team_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id"))
+        joinColumns = {
+                @JoinColumn(name = "user_id", referencedColumnName = "id")
+        },
+            inverseJoinColumns = {
+                @JoinColumn(name = "team_id", referencedColumnName = "id")
+            }
+    )
     private Set<Team> team;
 
     public User(CreateUserDTO data) {
