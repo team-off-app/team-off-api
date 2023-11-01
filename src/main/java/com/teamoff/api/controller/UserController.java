@@ -1,6 +1,6 @@
 package com.teamoff.api.controller;
 
-import com.teamoff.api.dto.UserDTO;
+import com.teamoff.api.dto.request.UserRequestDTO;
 import com.teamoff.api.model.User;
 import com.teamoff.api.service.UserService;
 import jakarta.transaction.Transactional;
@@ -15,19 +15,25 @@ import java.util.UUID;
 @RequestMapping("/api/users")
 public class UserController {
 
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create (@RequestBody @Valid UserDTO data){
-        return UserService.createUser(data);
+    public ResponseEntity<?> create (@RequestBody @Valid UserRequestDTO data){
+        return userService.createUser(data);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserByID(@PathVariable UUID id){
-        return UserService.findUserById(id);
+        return userService.findUserById(id);
     }
 
     @GetMapping()
-    public List<User> getAllUsers(){ return UserService.findAllUsers();
+    public List<User> getAllUsers(){ return userService.findAllUsers();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.teamoff.api.service;
 
-import com.teamoff.api.dto.UserDTO;
+import com.teamoff.api.dto.request.UserRequestDTO;
 import com.teamoff.api.model.User;
 import com.teamoff.api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -13,23 +13,23 @@ import java.util.UUID;
 @Controller
 public class UserService {
 
-    private static UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
-        UserService.userRepository = userRepository;
+        this.userRepository = userRepository;
     }
 
-    public static ResponseEntity<Object> findUserById(UUID id) {
+    public ResponseEntity<Object> findUserById(UUID id) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {new ResponseEntity<>(HttpStatus.NOT_FOUND);}
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    public static List<User> findAllUsers() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
-    public static ResponseEntity<?> createUser(UserDTO data) {
+    public ResponseEntity<?> createUser(UserRequestDTO data) {
         return new ResponseEntity<>(
                 userRepository.save(new User(data)),
                 HttpStatus.CREATED

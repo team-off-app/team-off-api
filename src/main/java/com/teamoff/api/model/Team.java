@@ -1,7 +1,7 @@
 package com.teamoff.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.teamoff.api.dto.TeamDTO;
+import com.teamoff.api.dto.request.TeamRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +27,7 @@ public class Team {
     @ManyToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private Set<User> user;
 
-    public Team(TeamDTO data) {
+    public Team(TeamRequestDTO data) {
         this.name = data.name();
     }
 }
