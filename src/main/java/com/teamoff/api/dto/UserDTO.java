@@ -1,8 +1,8 @@
-package com.teamoff.api.dto.create;
+package com.teamoff.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CreateUserDTO (
+public record UserDTO(
         @NotBlank
         String username,
         @NotBlank

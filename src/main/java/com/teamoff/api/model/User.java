@@ -1,6 +1,6 @@
 package com.teamoff.api.model;
 
-import com.teamoff.api.dto.create.CreateUserDTO;
+import com.teamoff.api.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,16 +25,16 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "team_user",
-        joinColumns = {
-                @JoinColumn(name = "user_id", referencedColumnName = "id")
-        },
+            joinColumns = {
+                    @JoinColumn(name = "user_id", referencedColumnName = "id")
+            },
             inverseJoinColumns = {
-                @JoinColumn(name = "team_id", referencedColumnName = "id")
+                    @JoinColumn(name = "team_id", referencedColumnName = "id")
             }
     )
     private Set<Team> team;
 
-    public User(CreateUserDTO data) {
+    public User(UserDTO data) {
         this.username = data.username();
         this.photoUrl = data.photoUrl();
     }
