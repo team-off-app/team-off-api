@@ -31,7 +31,7 @@ public class EventService {
     }
 
     public ResponseEntity<?> findEventById(UUID id) {
-        return new ResponseEntity<>(eventRepository.findById(id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(eventRepository.findById(id), HttpStatus.OK);
     }
 
     public List<Event> findAllEvents() {
