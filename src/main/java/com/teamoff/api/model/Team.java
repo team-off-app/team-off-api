@@ -3,7 +3,10 @@ package com.teamoff.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teamoff.api.dto.request.TeamRequestDTO;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 import java.util.UUID;

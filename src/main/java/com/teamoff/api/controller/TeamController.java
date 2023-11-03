@@ -3,6 +3,7 @@ package com.teamoff.api.controller;
 import com.teamoff.api.dto.request.TeamRequestDTO;
 import com.teamoff.api.model.Team;
 import com.teamoff.api.service.TeamService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +16,29 @@ import java.util.UUID;
 @RequestMapping("/api/team")
 public class TeamController {
 
+    private final TeamService teamService;
+
+    public TeamController(TeamService teamService) {
+        this.teamService = teamService;
+    }
+
+    @Operation(summary = "Create a new team")
     @PostMapping
     @Transactional
     public ResponseEntity<?> create (@RequestBody @Valid TeamRequestDTO data){
-        return TeamService.createTeam(data);
+        return teamService.createTeam(data);
     }
 
+    @Operation(summary = "Get a team by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<?> getTeamByID(@PathVariable UUID id){
-        return TeamService.findTeamById(id);
+        return teamService.findTeamById(id);
     }
 
+    @Operation(summary = "Retrieve all teams")
     @GetMapping()
     public List<Team> getAllTeams(){
-        return TeamService.findAllTeams();
+        return teamService.findAllTeams();
     }
 
 }

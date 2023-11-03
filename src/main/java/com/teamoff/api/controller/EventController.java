@@ -3,6 +3,7 @@ package com.teamoff.api.controller;
 import com.teamoff.api.dto.request.EventRequestDTO;
 import com.teamoff.api.model.Event;
 import com.teamoff.api.service.EventService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +22,24 @@ public class EventController {
         this.eventService = eventService;
     }
 
+    @Operation(summary = "Create a new event")
     @PostMapping
     @Transactional
     public ResponseEntity<?> create (@RequestBody @Valid EventRequestDTO data){
         return eventService.createEvent(data);
     }
 
+    @Operation (summary = "Get a event by its ID")
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserByID(@PathVariable UUID id){
         return eventService.findEventById(id);
     }
 
+    @Operation(summary = "Retrieve all events")
     @GetMapping()
     public List<Event> getAllUsers(){ return eventService.findAllEvents();
     }
+
+
 
 }
