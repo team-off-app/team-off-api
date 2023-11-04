@@ -1,5 +1,6 @@
 package com.teamoff.api.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.teamoff.api.dto.request.EventRequestDTO;
 import jakarta.persistence.*;
@@ -24,9 +25,11 @@ public class Event {
     @Column(nullable = false)
     private String title;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(nullable = false)
     private LocalDateTime startDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(nullable = false)
     private LocalDateTime endDate;
 
