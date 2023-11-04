@@ -50,7 +50,6 @@ public class Event {
         this.notes = data.notes();
         this.user = user;
         this.type = EventType.valueOf(data.type());
-
     }
 
 

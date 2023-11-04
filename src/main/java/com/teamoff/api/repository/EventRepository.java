@@ -11,9 +11,18 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<Event, UUID> {
-    @Query("SELECT e FROM Event e WHERE e.startDate BETWEEN :startDate AND :endDate")
-    List<Event> findAllEventsBetweenDates(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    @Query("SELECT e FROM Event e " +
+            "WHERE e.startDate <= :startDate " +
+            "AND e.endDate >= :endDate")
+    List<Event> findAllEventsBetweenDates(@Param("startDate") LocalDateTime startDate,
+                                          @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT e FROM Event e JOIN e.user u WHERE :team_id MEMBER OF u.teams AND e.startDate BETWEEN :startDate AND :endDate")
-    List<Event> findAllTeamEventsBetweenDates(@Param("team_id") Team team, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    @Query("Select e From Event e " +
+            "Join User u on e.user.id = u.id " +
+            "Where :team_id MEMBER OF u.teams " +
+            "And e.startDate <= :startDate " +
+            "And e.endDate >= :endDate ")
+    List<Event> findAllTeamEventsBetweenDates(@Param("team_id") Team team,
+                                              @Param("startDate") LocalDateTime startDate,
+                                              @Param("endDate") LocalDateTime endDate);
 }
