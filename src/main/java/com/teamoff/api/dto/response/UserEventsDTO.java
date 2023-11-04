@@ -11,15 +11,15 @@ import java.util.UUID;
 @Data
 public class UserEventsDTO {
     private UUID id;
-    private String username;
+    private String name;
     private String photoUrl;
-    private Set<Team> team;
+    private Set<Team> teams;
     private List<EventResponseDTO> events;
 
     public UserEventsDTO(User user){
         this.id = user.getId();
-        this.username = user.getUsername();
+        this.name = user.getName();
         this.photoUrl = user.getPhotoUrl();
-        this.team = user.getTeam();
+        this.teams = user.getTeams();
     }
 }

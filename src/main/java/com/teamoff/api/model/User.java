@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(unique=true, nullable = false)
-    private String username;
+    private String name;
     private String photoUrl;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -32,10 +32,10 @@ public class User {
                     @JoinColumn(name = "team_id", referencedColumnName = "id")
             }
     )
-    private Set<Team> team;
+    private Set<Team> teams;
 
     public User(UserRequestDTO data) {
-        this.username = data.username();
+        this.name = data.username();
         this.photoUrl = data.photoUrl();
     }
 }

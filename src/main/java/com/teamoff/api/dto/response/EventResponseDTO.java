@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public record EventResponseDTO (
-        UUID UUID,
+        UUID id,
         String title,
         String startDate,
         String endDate,
@@ -17,8 +17,8 @@ public record EventResponseDTO (
         this(
                 e.getId(),
                 e.getTitle(),
-                e.getStartDate().format(DateTimeFormatter.ISO_DATE_TIME),
-                e.getEndDate().format(DateTimeFormatter.ISO_DATE_TIME),
+                e.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                e.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                 e.getNotes(),
                 String.valueOf(e.getType())
         );

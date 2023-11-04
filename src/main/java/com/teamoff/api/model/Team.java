@@ -27,7 +27,7 @@ public class Team {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "team", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "teams", fetch = FetchType.LAZY)
     private Set<User> user;
 
     public Team(TeamRequestDTO data) {

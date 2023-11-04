@@ -58,7 +58,6 @@ public class UserService {
                     userEventsDTO.getEvents().add(eventResponseDTO);
                 }
         );
-
         return new ArrayList<>(userEventMap.values());
     }
 }

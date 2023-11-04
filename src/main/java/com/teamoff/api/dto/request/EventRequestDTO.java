@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.UUID;
 import java.time.LocalDateTime;
 
 public record EventRequestDTO(
-        @NotBlank
         String title,
 
         LocalDateTime startDate,
