@@ -2,7 +2,6 @@ package com.teamoff.api.controller;
 
 import com.teamoff.api.dto.request.UserRequestDTO;
 import com.teamoff.api.dto.response.UserEventsDTO;
-import com.teamoff.api.model.Event;
 import com.teamoff.api.model.User;
 import com.teamoff.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,20 +28,21 @@ public class UserController {
     @Operation(summary = "Create a new user")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create (@RequestBody @Valid UserRequestDTO data){
+    public ResponseEntity<?> create(@RequestBody @Valid UserRequestDTO data) {
         return userService.createUser(data);
     }
 
     @Operation(summary = "Get a user by its ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUserByID(@PathVariable UUID id){
+    public ResponseEntity<Object> getUserByID(@PathVariable UUID id) {
         return userService.findUserById(id);
     }
 
 
     @Operation(summary = "Retrieve all users")
     @GetMapping()
-    public List<User> getAllUsers(){ return userService.findAllUsers();
+    public List<User> getAllUsers() {
+        return userService.findAllUsers();
     }
 
     @Operation(summary = "Retrieve all events given a start and end date")

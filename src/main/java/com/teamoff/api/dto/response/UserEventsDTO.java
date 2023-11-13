@@ -16,7 +16,7 @@ public class UserEventsDTO {
     private Set<Team> teams;
     private List<EventResponseDTO> events;
 
-    public UserEventsDTO(User user){
+    public UserEventsDTO(User user) {
         this.id = user.getId();
         this.name = user.getName();
         this.photoUrl = user.getPhotoUrl();

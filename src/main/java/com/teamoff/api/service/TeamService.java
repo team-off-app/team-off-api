@@ -1,11 +1,10 @@
 package com.teamoff.api.service;
 
 import com.teamoff.api.dto.request.TeamRequestDTO;
-import com.teamoff.api.model.Event;
+import com.teamoff.api.dto.response.UserEventsDTO;
 import com.teamoff.api.model.Team;
 import com.teamoff.api.repository.EventRepository;
 import com.teamoff.api.repository.TeamRepository;
-import jakarta.validation.constraints.Null;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,10 +17,12 @@ import java.util.UUID;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final EventRepository eventRepository;
+    private final EventService eventService;
 
-    public TeamService(TeamRepository teamRepository, EventRepository eventRepository) {
+    public TeamService(TeamRepository teamRepository, EventRepository eventRepository, EventService eventService) {
         this.teamRepository = teamRepository;
         this.eventRepository = eventRepository;
+        this.eventService = eventService;
     }
 
     public ResponseEntity<?> createTeam(TeamRequestDTO data) {
@@ -41,8 +42,8 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public List<Event> getTeamEvents(UUID id, LocalDateTime startDate, LocalDateTime endDate) {
-        var team = teamRepository.findById(id).orElseThrow(NullPointerException::new);
-        return eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate);
+    public List<UserEventsDTO> getTeamEvents(UUID id, LocalDateTime startDate, LocalDateTime endDate) {
+        Team team = teamRepository.findById(id).orElseThrow(NullPointerException::new);
+        return eventService.groupEventsByUser(eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate));
     }
 }

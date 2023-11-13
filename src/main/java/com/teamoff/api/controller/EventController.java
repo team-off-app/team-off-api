@@ -25,21 +25,19 @@ public class EventController {
     @Operation(summary = "Create a new event")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create (@RequestBody @Valid EventRequestDTO data){
+    public ResponseEntity<?> create(@RequestBody @Valid EventRequestDTO data) {
         return eventService.createEvent(data);
     }
 
-    @Operation (summary = "Get a event by its ID")
+    @Operation(summary = "Get a event by its ID")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserByID(@PathVariable UUID id){
+    public ResponseEntity<?> getUserByID(@PathVariable UUID id) {
         return eventService.findEventById(id);
     }
 
     @Operation(summary = "Retrieve all events")
     @GetMapping()
-    public List<Event> getAllUsers(){ return eventService.findAllEvents();
+    public List<Event> getAllUsers() {
+        return eventService.findAllEvents();
     }
-
-
-
 }

@@ -1,6 +1,8 @@
 package com.teamoff.api.service;
 
 import com.teamoff.api.dto.request.EventRequestDTO;
+import com.teamoff.api.dto.response.EventResponseDTO;
+import com.teamoff.api.dto.response.UserEventsDTO;
 import com.teamoff.api.model.Event;
 import com.teamoff.api.model.User;
 import com.teamoff.api.repository.EventRepository;
@@ -9,8 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class EventService {
@@ -38,5 +39,42 @@ public class EventService {
         return eventRepository.findAll();
     }
 
+    public List<UserEventsDTO> groupEventsByUser(List<Event> events){
+        Map<UUID, UserEventsDTO> userEventMap = new HashMap<>();
+
+        events.forEach(event -> {
+                    User user = event.getUser();
+                    UserEventsDTO userEventsDTO = userEventMap.get(user.getId());
+                    if (userEventsDTO == null) {
+                        userEventsDTO = new UserEventsDTO(user);
+                        userEventsDTO.setEvents(new ArrayList<>());
+                        userEventMap.put(user.getId(), userEventsDTO);
+                    }
+                    EventResponseDTO eventResponseDTO = new EventResponseDTO(event);
+                    userEventsDTO.getEvents().add(eventResponseDTO);
+                }
+        );
+        return new ArrayList<>(userEventMap.values());
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

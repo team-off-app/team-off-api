@@ -43,7 +43,7 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventType type;
 
-    public Event(EventRequestDTO data , User user){
+    public Event(EventRequestDTO data, User user) {
         this.title = data.title();
         this.startDate = data.startDate();
         this.endDate = data.endDate();

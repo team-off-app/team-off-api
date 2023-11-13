@@ -5,7 +5,7 @@ import com.teamoff.api.model.Event;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-public record EventResponseDTO (
+public record EventResponseDTO(
         UUID id,
         String title,
         String startDate,
@@ -13,7 +13,7 @@ public record EventResponseDTO (
         String notes,
         String type
 ) {
-    public EventResponseDTO(Event e){
+    public EventResponseDTO(Event e) {
         this(
                 e.getId(),
                 e.getTitle(),

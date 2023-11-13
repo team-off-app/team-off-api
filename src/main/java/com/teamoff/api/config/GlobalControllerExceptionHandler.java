@@ -29,7 +29,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public Map<String, String> handleMethodArgumentTypeMismatchException(
-            MethodArgumentTypeMismatchException ex){
+            MethodArgumentTypeMismatchException ex) {
         Map<String, String> error = new HashMap<>();
         error.put(ex.getName(), ex.getMessage());
         return error;

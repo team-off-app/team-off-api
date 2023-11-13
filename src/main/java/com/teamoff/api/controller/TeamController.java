@@ -1,7 +1,7 @@
 package com.teamoff.api.controller;
 
 import com.teamoff.api.dto.request.TeamRequestDTO;
-import com.teamoff.api.model.Event;
+import com.teamoff.api.dto.response.UserEventsDTO;
 import com.teamoff.api.model.Team;
 import com.teamoff.api.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,12 +45,12 @@ public class TeamController {
     }
 
     @Operation(summary = "Get all events of a given team")
-    @GetMapping("/events")
-    public List<Event> getAllEventsByTeam(@RequestParam UUID id,
-                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                          LocalDateTime startDate,
-                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                          LocalDateTime endDate) {
+    @GetMapping("/events/{id}")
+    public List<UserEventsDTO> getAllEventsByTeam(@PathVariable UUID id,
+                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                  LocalDateTime startDate,
+                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                  LocalDateTime endDate) {
         return teamService.getTeamEvents(id, startDate, endDate);
     }
 
