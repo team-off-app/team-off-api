@@ -45,7 +45,7 @@ public class TeamController {
     }
 
     @Operation(summary = "Get all events of a given team")
-    @GetMapping("/events/{id}")
+    @GetMapping("/{id}/users")
     public List<UserEventsDTO> getAllEventsByTeam(@PathVariable UUID id,
                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                   LocalDateTime startDate,
