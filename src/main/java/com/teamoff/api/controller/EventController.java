@@ -6,6 +6,7 @@ import com.teamoff.api.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +40,12 @@ public class EventController {
     @GetMapping()
     public List<Event> getAllUsers() {
         return eventService.findAllEvents();
+    }
+
+    @Operation(summary = "Delete a event by its ID")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteById (@PathVariable UUID id ) {
+       eventService.deleteEventById(id);
     }
 }

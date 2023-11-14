@@ -58,6 +58,10 @@ public class EventService {
     }
 
 
+    public void deleteEventById(UUID id) {
+        Event e = eventRepository.findById(id).orElseThrow(NullPointerException::new);
+        eventRepository.deleteById(e.getId());
+    }
 }
 
 
