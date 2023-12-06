@@ -36,11 +36,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public ResponseEntity<?> createUser(UserRequestDTO data) {
-        return new ResponseEntity<>(
-                userRepository.save(new User(data)),
-                HttpStatus.CREATED
-        );
+    public User createUser(UserRequestDTO data) {
+        return userRepository.save(new User(data));
     }
 
     public List<UserEventsDTO> getUsersEvents(LocalDateTime startDate, LocalDateTime endDate) {

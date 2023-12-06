@@ -10,7 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -28,8 +30,10 @@ public class UserController {
     @Operation(summary = "Create a new user")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create(@RequestBody @Valid UserRequestDTO data) {
-        return userService.createUser(data);
+    public ResponseEntity<?> create(@RequestBody @Valid UserRequestDTO data, UriComponentsBuilder uriBuilder) {
+        User user = userService.createUser(data);
+        URI uri = uriBuilder.path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(user);
     }
 
     @Operation(summary = "Get a user by its ID")
