@@ -10,7 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -28,8 +30,10 @@ public class TeamController {
     @Operation(summary = "Create a new team")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create(@RequestBody @Valid TeamRequestDTO data) {
-        return teamService.createTeam(data);
+    public ResponseEntity<?> create(@RequestBody @Valid TeamRequestDTO data, UriComponentsBuilder uriBuilder) {
+        var team = teamService.createTeam(data);
+        URI uri = uriBuilder.path("/api/team/{id}").buildAndExpand(team.getId()).toUri();
+        return ResponseEntity.created(uri).body(team);
     }
 
     @Operation(summary = "Get a team by its ID")

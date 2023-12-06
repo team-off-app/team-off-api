@@ -8,7 +8,9 @@ import com.teamoff.api.repository.TeamRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -25,16 +27,15 @@ public class TeamService {
         this.eventService = eventService;
     }
 
-    public ResponseEntity<?> createTeam(TeamRequestDTO data) {
-        return new ResponseEntity<>(
-                teamRepository.save(new Team(data)),
-                HttpStatus.CREATED
-        );
+    public Team createTeam(TeamRequestDTO data) {
+        return teamRepository.save(new Team(data));
     }
 
     public ResponseEntity<Object> findTeamById(UUID id) {
         Team team = teamRepository.findById(id).orElse(null);
-        if (team == null) {new ResponseEntity<>(HttpStatus.NOT_FOUND);}
+        if (team == null) {
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
 
