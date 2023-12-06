@@ -9,7 +9,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,8 +28,10 @@ public class EventController {
     @Operation(summary = "Create a new event")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create(@RequestBody @Valid EventRequestDTO data) {
-        return eventService.createEvent(data);
+    public ResponseEntity<?> create(@RequestBody @Valid EventRequestDTO data, UriComponentsBuilder uriBuilder) {
+        Event event = eventService.createEvent(data);
+        URI uri = uriBuilder.path("/api/event/{id}").buildAndExpand(event.getId()).toUri();
+        return ResponseEntity.created(uri).body(event);
     }
 
     @Operation(summary = "Get a event by its ID")

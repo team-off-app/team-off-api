@@ -1,5 +1,7 @@
 package com.teamoff.api.config;
 
+import com.teamoff.api.exception.UserNotFoundException;
+import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,4 +37,12 @@ public class GlobalControllerExceptionHandler {
         return error;
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({UserNotFoundException.class})
+    public Map<String, String> handleUserNotFoundException(
+            UserNotFoundException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("message", ex.getMessage());
+        return error;
+    }
 }

@@ -3,6 +3,7 @@ package com.teamoff.api.service;
 import com.teamoff.api.dto.request.EventRequestDTO;
 import com.teamoff.api.dto.response.EventResponseDTO;
 import com.teamoff.api.dto.response.UserEventsDTO;
+import com.teamoff.api.exception.UserNotFoundException;
 import com.teamoff.api.model.Event;
 import com.teamoff.api.model.User;
 import com.teamoff.api.repository.EventRepository;
@@ -25,10 +26,10 @@ public class EventService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<?> createEvent(EventRequestDTO data) {
+    public Event createEvent(EventRequestDTO data) {
         User user = userRepository.findById(UUID.fromString(data.userId())).orElse(null);
-        if (user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(eventRepository.save(new Event(data, user)), HttpStatus.CREATED);
+        if (user == null) throw new UserNotFoundException("User not found exception");
+        return eventRepository.save(new Event(data, user));
     }
 
     public ResponseEntity<?> findEventById(UUID id) {
