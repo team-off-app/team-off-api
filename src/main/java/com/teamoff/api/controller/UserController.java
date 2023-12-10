@@ -30,7 +30,7 @@ public class UserController {
     @Operation(summary = "Create a new user")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create(@RequestBody @Valid UserRequestDTO data, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> create(@RequestBody @Valid UserRequestDTO data, @org.jetbrains.annotations.NotNull UriComponentsBuilder uriBuilder) {
         User user = userService.createUser(data);
         URI uri = uriBuilder.path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
