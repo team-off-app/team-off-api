@@ -29,6 +29,9 @@ public class Auth implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @OneToOne
+    private User user;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
