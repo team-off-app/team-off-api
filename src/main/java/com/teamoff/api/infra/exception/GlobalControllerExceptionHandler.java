@@ -1,7 +1,5 @@
-package com.teamoff.api.config;
+package com.teamoff.api.infra.exception;
 
-import com.teamoff.api.exception.UserNotFoundException;
-import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

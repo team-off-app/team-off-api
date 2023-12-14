@@ -1,4 +1,4 @@
-package com.teamoff.api.config;
+package com.teamoff.api.infra;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

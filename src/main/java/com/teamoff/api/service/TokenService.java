@@ -1,8 +1,10 @@
 package com.teamoff.api.service;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.teamoff.api.model.Auth;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,22 @@ public class TokenService {
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error while generating JWT Token", exception);
         }
+    }
+
+    public String getSubject(String tokenJWT){
+        // verifica se token é válido
+        try{
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("API Team Off")
+                    .build()
+                    .verify(tokenJWT)
+                    .getSubject();
+        } catch (JWTVerificationException exception) {
+            throw new RuntimeException("Token invalid or expired");
+        }
+
+        // retorna o usuário
     }
 
     private Instant expireDate() {

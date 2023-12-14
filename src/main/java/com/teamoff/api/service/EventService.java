@@ -3,7 +3,7 @@ package com.teamoff.api.service;
 import com.teamoff.api.dto.request.EventRequestDTO;
 import com.teamoff.api.dto.response.EventResponseDTO;
 import com.teamoff.api.dto.response.UserEventsDTO;
-import com.teamoff.api.exception.UserNotFoundException;
+import com.teamoff.api.infra.exception.UserNotFoundException;
 import com.teamoff.api.model.Event;
 import com.teamoff.api.model.User;
 import com.teamoff.api.repository.EventRepository;
