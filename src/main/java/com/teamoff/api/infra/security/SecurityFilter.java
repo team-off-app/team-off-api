@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -21,12 +22,10 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final AuthRepository authRepository;
-    private final UserRepository userRepository;
 
-    public SecurityFilter(TokenService tokenService, UserRepository userRepository, AuthRepository authRepository) {
+    public SecurityFilter(TokenService tokenService, AuthRepository authRepository) {
         this.tokenService = tokenService;
         this.authRepository = authRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         String tokenJWT = getToken(request);
         if (tokenJWT != null) {
             String subject = tokenService.getSubject(tokenJWT);
-            Auth auth = authRepository.findByUser(UUID.fromString(subject));
+            Auth auth = authRepository.findAuthById(UUID.fromString(subject));
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(auth, null, auth.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

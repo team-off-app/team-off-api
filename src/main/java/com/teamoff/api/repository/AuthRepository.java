@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface AuthRepository extends JpaRepository<Auth, UUID> {
     UserDetails findByLogin(String login);
 
-    @Query("Select a From Auth a Where User.id = :uuid")
-    Auth findByUser(UUID uuid);
+    @Query("Select a From Auth a Where a.id = :uuid")
+    Auth findAuthById(UUID uuid);
 }

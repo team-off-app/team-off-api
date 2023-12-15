@@ -7,6 +7,4 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-    @Query("SELECT u FROM User u WHERE u.id = :id")
-    User findUserById(UUID id);
 }

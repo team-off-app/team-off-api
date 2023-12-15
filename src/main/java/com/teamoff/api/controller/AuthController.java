@@ -28,13 +28,10 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity<Object> login(@RequestBody @Valid AuthRequestDTO data){
-
         Authentication authentication = manager.authenticate(
                 new UsernamePasswordAuthenticationToken(data.login(), data.password())
         );
-
         var tokenJWT = tokenService.generateToken((Auth) authentication.getPrincipal());
-
         return ResponseEntity.ok(new TokenResponseDTO(tokenJWT));
     }
 }
