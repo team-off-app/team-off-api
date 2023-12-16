@@ -24,8 +24,8 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("API Team Off")
-                    .withSubject(auth.getId().toString())
-                    .withClaim("id", auth.getUser().getId().toString())
+                    .withClaim("auth_id", auth.getId().toString())
+                    .withClaim("user_id", auth.getUser().getId().toString())
                     .withExpiresAt(expireDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception){
@@ -33,20 +33,19 @@ public class TokenService {
         }
     }
 
-    public String getSubject(String tokenJWT){
-        // verifica se token é válido
+    public String getClaim(String tokenJWT, String claim){
+
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer("API Team Off")
                     .build()
                     .verify(tokenJWT)
-                    .getSubject();
+                    .getClaim(claim)
+                    .asString();
         } catch (JWTVerificationException exception) {
             throw new RuntimeException("Token invalid or expired");
         }
-
-        // retorna o usuário
     }
 
     private Instant expireDate() {

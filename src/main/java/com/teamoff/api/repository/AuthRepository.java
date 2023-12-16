@@ -1,7 +1,6 @@
 package com.teamoff.api.repository;
 
 import com.teamoff.api.model.Auth;
-import com.teamoff.api.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;

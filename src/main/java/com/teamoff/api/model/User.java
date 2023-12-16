@@ -19,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(unique=true, nullable = false)
+    @Column(nullable = false)
     private String name;
     private String photoUrl;
 
@@ -35,7 +35,7 @@ public class User {
     private Set<Team> teams;
 
     public User(UserRequestDTO data) {
-        this.name = data.username();
+        this.name = data.name();
         this.photoUrl = data.photoUrl();
     }
 }
