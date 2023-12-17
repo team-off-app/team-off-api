@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Date;
 
@@ -49,6 +50,7 @@ public class TokenService {
     }
 
     private Instant expireDate() {
-        return LocalDateTime.now().plusHours(12).toInstant(ZoneOffset.UTC);
+        var now = LocalDateTime.now();
+        return now.plusHours(12).toInstant(ZoneId.systemDefault().getRules().getOffset(now));
     }
 }

@@ -27,7 +27,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Create a new user")
+    @Operation(summary = "Create a new user and auth")
     @PostMapping
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid UserRequestDTO data, @org.jetbrains.annotations.NotNull UriComponentsBuilder uriBuilder) {
