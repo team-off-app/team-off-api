@@ -1,6 +1,6 @@
 package com.teamoff.api.model;
 
-import com.teamoff.api.dto.request.UserRequestDTO;
+import com.teamoff.api.dto.request.UserAuthRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +34,7 @@ public class User {
     )
     private Set<Team> teams;
 
-    public User(UserRequestDTO data) {
+    public User(UserAuthRequestDTO data) {
         this.name = data.name();
         this.photoUrl = data.photoUrl();
     }

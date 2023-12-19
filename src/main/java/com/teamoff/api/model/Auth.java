@@ -1,6 +1,6 @@
 package com.teamoff.api.model;
 
-import com.teamoff.api.dto.request.UserRequestDTO;
+import com.teamoff.api.dto.request.UserAuthRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "Auth")
@@ -30,6 +29,13 @@ public class Auth implements UserDetails {
     private String password;
     @OneToOne
     private User user;
+
+
+    public Auth(String login, String password, User user) {
+        this.login = login;
+        this.password = password;
+        this.user = user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

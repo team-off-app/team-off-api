@@ -1,8 +1,10 @@
 package com.teamoff.api.controller;
 
-import com.teamoff.api.dto.request.UserRequestDTO;
+import com.teamoff.api.dto.request.UserAuthRequestDTO;
 import com.teamoff.api.dto.response.UserEventsDTO;
+import com.teamoff.api.model.Auth;
 import com.teamoff.api.model.User;
+import com.teamoff.api.service.AuthService;
 import com.teamoff.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
@@ -22,16 +24,19 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final AuthService authService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @Operation(summary = "Create a new user and auth")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create(@RequestBody @Valid UserRequestDTO data, @org.jetbrains.annotations.NotNull UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> create(@RequestBody @Valid UserAuthRequestDTO data, UriComponentsBuilder uriBuilder) {
         User user = userService.createUser(data);
+        Auth auth = authService.createAuth(data, user);
         URI uri = uriBuilder.path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
     }

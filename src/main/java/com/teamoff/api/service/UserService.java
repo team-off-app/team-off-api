@@ -1,6 +1,6 @@
 package com.teamoff.api.service;
 
-import com.teamoff.api.dto.request.UserRequestDTO;
+import com.teamoff.api.dto.request.UserAuthRequestDTO;
 import com.teamoff.api.dto.response.UserEventsDTO;
 import com.teamoff.api.model.User;
 import com.teamoff.api.repository.EventRepository;
@@ -36,7 +36,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User createUser(UserRequestDTO data) {
+    public User createUser(UserAuthRequestDTO data) {
         return userRepository.save(new User(data));
     }
 

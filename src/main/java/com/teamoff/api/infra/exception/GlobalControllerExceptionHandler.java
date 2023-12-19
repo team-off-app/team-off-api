@@ -1,5 +1,7 @@
 package com.teamoff.api.infra.exception;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,6 +13,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.naming.AuthenticationException;
 import java.nio.file.AccessDeniedException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,17 +47,12 @@ public class GlobalControllerExceptionHandler {
     public Map<String, String> handleUserNotFoundException(
             UserNotFoundException ex) {
         Map<String, String> error = new HashMap<>();
-        error.put("message", ex.getMessage());
+        error.put("error", ex.getMessage());
         return error;
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Object> tratarErroAuthentication() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha na autenticação");
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> tratarErroAcessoNegado() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleSqlException (DataIntegrityViolationException ex){
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 }
