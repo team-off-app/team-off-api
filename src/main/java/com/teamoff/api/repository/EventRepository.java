@@ -21,7 +21,8 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
             "Join User u on e.user.id = u.id " +
             "Where :team_id MEMBER OF u.teams " +
             "And e.startDate BETWEEN :startDate AND :endDate " +
-            "And e.endDate BETWEEN :startDate AND :endDate ")
+            "And e.endDate BETWEEN :startDate AND :endDate " +
+            "Order By e.startDate Asc")
     List<Event> findAllTeamEventsBetweenDates(@Param("team_id") Team team,
                                               @Param("startDate") LocalDateTime startDate,
                                               @Param("endDate") LocalDateTime endDate);

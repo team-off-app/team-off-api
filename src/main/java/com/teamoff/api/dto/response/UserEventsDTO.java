@@ -1,12 +1,11 @@
 package com.teamoff.api.dto.response;
 
+import com.teamoff.api.model.Event;
 import com.teamoff.api.model.Team;
 import com.teamoff.api.model.User;
 import lombok.Data;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 public class UserEventsDTO {

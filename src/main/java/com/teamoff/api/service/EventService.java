@@ -56,10 +56,9 @@ public class EventService {
                 }
         );
 
-        var result = new ArrayList<>(userEventMap.values());
-
+        List<UserEventsDTO> result = new ArrayList<>(userEventMap.values());
         if (!userId.isEmpty()) {
-            result.sort(Comparator.comparing(u -> u.getId().toString().equals(userId) ? -1 : 0));
+            result.sort(Comparator.comparingInt(u -> u.getId().toString().equals(userId) ? -1 : 0));
         }
 
         return result;
