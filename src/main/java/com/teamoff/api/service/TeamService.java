@@ -8,9 +8,7 @@ import com.teamoff.api.repository.TeamRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -20,11 +18,13 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final EventRepository eventRepository;
     private final EventService eventService;
+    private final TokenService tokenService;
 
-    public TeamService(TeamRepository teamRepository, EventRepository eventRepository, EventService eventService) {
+    public TeamService(TeamRepository teamRepository, EventRepository eventRepository, EventService eventService, TokenService tokenService) {
         this.teamRepository = teamRepository;
         this.eventRepository = eventRepository;
         this.eventService = eventService;
+        this.tokenService = tokenService;
     }
 
     public Team createTeam(TeamRequestDTO data) {
@@ -43,8 +43,10 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    public List<UserEventsDTO> getTeamEvents(UUID id, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<UserEventsDTO> getTeamEvents(UUID id, LocalDateTime startDate, LocalDateTime endDate, String token) {
         Team team = teamRepository.findById(id).orElseThrow(NullPointerException::new);
-        return eventService.groupEventsByUser(eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate));
+        String userId = tokenService.getClaim(token, "user_id");
+        System.out.println("StartDate: " + startDate + " | EndDate: " + endDate);
+        return eventService.groupEventsByUser(eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate), userId);
     }
 }

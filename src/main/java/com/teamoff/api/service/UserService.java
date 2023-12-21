@@ -19,11 +19,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final EventService eventService;
+    private final TokenService tokenService;
 
-    public UserService(UserRepository userRepository, EventRepository eventRepository, EventService eventService) {
+    public UserService(UserRepository userRepository, EventRepository eventRepository, EventService eventService, TokenService tokenService) {
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.eventService = eventService;
+        this.tokenService = tokenService;
     }
 
     public ResponseEntity<Object> findUserById(UUID id) {
@@ -40,8 +42,9 @@ public class UserService {
         return userRepository.save(new User(data));
     }
 
-    public List<UserEventsDTO> getUsersEvents(LocalDateTime startDate, LocalDateTime endDate) {
-        return eventService.groupEventsByUser(eventRepository.findAllEventsBetweenDates(startDate, endDate));
+    public List<UserEventsDTO> getUsersEvents(LocalDateTime startDate, LocalDateTime endDate, String token) {
+        String userId = tokenService.getClaim(token, "user_id");
+        return eventService.groupEventsByUser(eventRepository.findAllEventsBetweenDates(startDate, endDate), userId);
 
     }
 }

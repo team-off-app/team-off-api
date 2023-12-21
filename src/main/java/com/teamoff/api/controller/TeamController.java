@@ -54,8 +54,9 @@ public class TeamController {
                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                   LocalDateTime startDate,
                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                  LocalDateTime endDate) {
-        return teamService.getTeamEvents(id, startDate, endDate);
+                                                  LocalDateTime endDate,
+                                                  @RequestHeader(name = "Authorization") String token) {
+        return teamService.getTeamEvents(id, startDate, endDate, token.replace("Bearer ",""));
     }
 
 }

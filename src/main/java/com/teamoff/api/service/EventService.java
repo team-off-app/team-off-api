@@ -40,7 +40,7 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public List<UserEventsDTO> groupEventsByUser(List<Event> events){
+    public List<UserEventsDTO> groupEventsByUser(List<Event> events, String userId) {
         Map<UUID, UserEventsDTO> userEventMap = new HashMap<>();
 
         events.forEach(event -> {
@@ -55,7 +55,14 @@ public class EventService {
                     userEventsDTO.getEvents().add(eventResponseDTO);
                 }
         );
-        return new ArrayList<>(userEventMap.values());
+
+        var result = new ArrayList<>(userEventMap.values());
+
+        if (!userId.isEmpty()) {
+            result.sort(Comparator.comparing(u -> u.getId().toString().equals(userId) ? -1 : 0));
+        }
+
+        return result;
     }
 
 

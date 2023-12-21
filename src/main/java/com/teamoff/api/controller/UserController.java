@@ -59,7 +59,9 @@ public class UserController {
     public List<UserEventsDTO> getAllEvents(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                             LocalDateTime startDate,
                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                            LocalDateTime endDate) {
-        return userService.getUsersEvents(startDate, endDate);
+                                            LocalDateTime endDate,
+                                            @RequestHeader(name = "Authorization")
+                                            String token) {
+        return userService.getUsersEvents(startDate, endDate, token.replace("Bearer ", ""));
     }
 }

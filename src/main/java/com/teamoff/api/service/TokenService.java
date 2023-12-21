@@ -35,7 +35,6 @@ public class TokenService {
     }
 
     public String getClaim(String tokenJWT, String claim){
-
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
@@ -45,6 +44,7 @@ public class TokenService {
                     .getClaim(claim)
                     .asString();
         } catch (JWTVerificationException exception) {
+            System.out.println("token="+tokenJWT);
             throw new RuntimeException("Token invalid or expired");
         }
     }
