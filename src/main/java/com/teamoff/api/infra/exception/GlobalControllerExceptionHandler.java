@@ -1,15 +1,18 @@
 package com.teamoff.api.infra.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.naming.AuthenticationException;
 import java.nio.file.AccessDeniedException;
@@ -55,4 +58,29 @@ public class GlobalControllerExceptionHandler {
     public ResponseEntity<Object> handleSqlException (DataIntegrityViolationException ex){
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler({EntityNotFoundException.class, NoHandlerFoundException.class})
+    public ResponseEntity<Object> tratarErro404() {
+        return ResponseEntity.notFound().build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public Map<String, String> handleMessageNotReadableException(
+            HttpMessageNotReadableException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return error;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler({Exception.class})
+    public Map<String, String> handleException(
+            Exception ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return error;
+    }
+
+
 }
