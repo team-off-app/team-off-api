@@ -1,10 +1,15 @@
 package com.teamoff.api.service;
 
 import com.teamoff.api.dto.request.TeamRequestDTO;
+import com.teamoff.api.dto.request.TeamUserRequestDTO;
 import com.teamoff.api.dto.response.UserEventsDTO;
+import com.teamoff.api.infra.exception.TeamNotFoundException;
+import com.teamoff.api.infra.exception.UserNotFoundException;
 import com.teamoff.api.model.Team;
+import com.teamoff.api.model.User;
 import com.teamoff.api.repository.EventRepository;
 import com.teamoff.api.repository.TeamRepository;
+import com.teamoff.api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,12 +22,14 @@ import java.util.UUID;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
     private final EventService eventService;
     private final TokenService tokenService;
 
-    public TeamService(TeamRepository teamRepository, EventRepository eventRepository, EventService eventService, TokenService tokenService) {
+    public TeamService(TeamRepository teamRepository, EventRepository eventRepository, UserRepository userRepository, EventService eventService, TokenService tokenService) {
         this.teamRepository = teamRepository;
         this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
         this.eventService = eventService;
         this.tokenService = tokenService;
     }
@@ -48,5 +55,15 @@ public class TeamService {
         String userId = tokenService.getClaim(token, "user_id");
         System.out.println("StartDate: " + startDate + " | EndDate: " + endDate);
         return eventService.groupEventsByUser(eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate), userId);
+    }
+
+    public User addUserToTeam(UUID id, TeamUserRequestDTO data) {
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new TeamNotFoundException("Team with id " + id + " not found"));
+        User user = userRepository.findById(UUID.fromString(data.userId()))
+                .orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
+
+        user.getTeams().add(team);
+        return user;
     }
 }

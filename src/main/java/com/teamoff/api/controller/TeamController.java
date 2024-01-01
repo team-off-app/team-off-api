@@ -1,8 +1,10 @@
 package com.teamoff.api.controller;
 
 import com.teamoff.api.dto.request.TeamRequestDTO;
+import com.teamoff.api.dto.request.TeamUserRequestDTO;
 import com.teamoff.api.dto.response.UserEventsDTO;
 import com.teamoff.api.model.Team;
+import com.teamoff.api.model.User;
 import com.teamoff.api.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
@@ -58,5 +60,15 @@ public class TeamController {
                                                   @RequestHeader(name = "Authorization") String token) {
         return teamService.getTeamEvents(id, startDate, endDate, token.replace("Bearer ",""));
     }
+
+
+    @Operation(summary = "Associate a user to a given team")
+    @PutMapping("/{id}")
+    @Transactional
+    public User associateTeamToUser(@PathVariable UUID id, @RequestBody @Valid TeamUserRequestDTO data){
+        return teamService.addUserToTeam(id, data);
+    }
+
+
 
 }
