@@ -20,9 +20,13 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
+
+    private final String REGEX_ERROR = "\\[ERROR:.*?\\]\\.";
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public Map<String, String> handleValidationExceptions(
@@ -46,9 +50,9 @@ public class GlobalControllerExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({UserNotFoundException.class})
+    @ExceptionHandler({ResourceNotFoundException.class})
     public Map<String, String> handleUserNotFoundException(
-            UserNotFoundException ex) {
+            ResourceNotFoundException ex) {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return error;

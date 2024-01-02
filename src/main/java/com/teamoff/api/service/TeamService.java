@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -51,19 +52,25 @@ public class TeamService {
     }
 
     public List<UserEventsDTO> getTeamEvents(UUID id, LocalDateTime startDate, LocalDateTime endDate, String token) {
-        Team team = teamRepository.findById(id).orElseThrow(NullPointerException::new);
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Team with id " + id + " not found"));
         String userId = tokenService.getClaim(token, "user_id");
         System.out.println("StartDate: " + startDate + " | EndDate: " + endDate);
         return eventService.groupEventsByUser(eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate), userId);
     }
 
     public User addUserToTeam(UUID id, TeamUserRequestDTO data) {
-        Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new TeamNotFoundException("Team with id " + id + " not found"));
-        User user = userRepository.findById(UUID.fromString(data.userId()))
-                .orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Team with id " + id + " not found"));
+        User user = userRepository.findById(UUID.fromString(data.userId())).orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
 
         user.getTeams().add(team);
+        return user;
+    }
+
+    public User removeUserToTeam(UUID id, TeamUserRequestDTO data) {
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Team with id " + id + " not found"));
+        User user = userRepository.findById(UUID.fromString(data.userId())).orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
+        if (!user.getTeams().contains(team)) throw new UserNotFoundException("User is already not in the team");
+        user.getTeams().remove(team);
         return user;
     }
 }

@@ -63,10 +63,16 @@ public class TeamController {
 
 
     @Operation(summary = "Associate a user to a given team")
-    @PutMapping("/{id}")
+    @PutMapping("/{teamId}")
     @Transactional
-    public User associateTeamToUser(@PathVariable UUID id, @RequestBody @Valid TeamUserRequestDTO data){
-        return teamService.addUserToTeam(id, data);
+    public User associateTeamToUser(@PathVariable UUID teamId, @RequestBody @Valid TeamUserRequestDTO userData){
+        return teamService.addUserToTeam(teamId, userData);
+    }
+
+    @Operation(summary = "Dissociate a user to a given team")
+    @DeleteMapping("/{teamId}")
+    public User dissociateTeamToUser(@PathVariable UUID teamId, @RequestBody @Valid TeamUserRequestDTO userData){
+        return teamService.removeUserToTeam(teamId, userData);
     }
 
 
