@@ -71,6 +71,7 @@ public class TeamService {
         User user = userRepository.findById(UUID.fromString(data.userId())).orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
         if (!user.getTeams().contains(team)) throw new UserNotFoundException("User is already not in the team");
         user.getTeams().remove(team);
+        userRepository.save(user);
         return user;
     }
 }
