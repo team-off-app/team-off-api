@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 public record EventRequestDTO(
         String title,
 
-        @FutureOrPresent
+
+
         LocalDateTime startDate,
 
-        @FutureOrPresent
+
         LocalDateTime endDate,
         String notes,
         @UUID

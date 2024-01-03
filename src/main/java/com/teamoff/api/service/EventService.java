@@ -8,10 +8,14 @@ import com.teamoff.api.model.Event;
 import com.teamoff.api.model.User;
 import com.teamoff.api.repository.EventRepository;
 import com.teamoff.api.repository.UserRepository;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -27,8 +31,9 @@ public class EventService {
     }
 
     public Event createEvent(EventRequestDTO data) {
-        User user = userRepository.findById(UUID.fromString(data.userId())).orElse(null);
-        if (user == null) throw new UserNotFoundException("User not found exception");
+        User user = userRepository.findById(UUID.fromString(data.userId())).orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
+        validateStartDate(data.startDate());
+        validateEndDate(data.startDate(),data.endDate());
         return eventRepository.save(new Event(data, user));
     }
 
@@ -68,6 +73,17 @@ public class EventService {
     public void deleteEventById(UUID id) {
         Event e = eventRepository.findById(id).orElseThrow(NullPointerException::new);
         eventRepository.deleteById(e.getId());
+    }
+
+    private void validateStartDate(LocalDateTime date) {
+        if (date.isBefore(LocalDate.now().atStartOfDay())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "startDate cannot be before the start of the current day");
+        }
+    }
+    private void validateEndDate(LocalDateTime startDate, LocalDateTime endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endDate cannot be before the start of the current day");
+        }
     }
 }
 

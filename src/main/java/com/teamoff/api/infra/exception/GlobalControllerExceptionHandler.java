@@ -1,7 +1,6 @@
 package com.teamoff.api.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.naming.AuthenticationException;
-import java.nio.file.AccessDeniedException;
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -75,6 +69,14 @@ public class GlobalControllerExceptionHandler {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return error;
+    }
+
+    @ExceptionHandler({ResponseStatusException.class})
+    public ResponseEntity<Map<String, String>> handleResponseStatusException(
+            ResponseStatusException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getReason());
+        return new ResponseEntity<>(error, ex.getStatusCode());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
