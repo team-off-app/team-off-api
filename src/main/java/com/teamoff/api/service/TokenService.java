@@ -51,6 +51,7 @@ public class TokenService {
 
     private Instant expireDate() {
         var now = LocalDateTime.now();
-        return now.plusHours(12).toInstant(ZoneId.systemDefault().getRules().getOffset(now));
+        return now.plusHours(12)
+                .toInstant(ZoneId.systemDefault().getRules().getOffset(now));
     }
 }

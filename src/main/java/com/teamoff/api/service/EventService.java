@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -32,7 +33,6 @@ public class EventService {
 
     public Event createEvent(EventRequestDTO data) {
         User user = userRepository.findById(UUID.fromString(data.userId())).orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
-        validateStartDate(data.startDate());
         validateEndDate(data.startDate(),data.endDate());
         return eventRepository.save(new Event(data, user));
     }
@@ -75,17 +75,9 @@ public class EventService {
         eventRepository.deleteById(e.getId());
     }
 
-    private void validateStartDate(LocalDateTime date) {
-        System.out.println(date);
-        System.out.println(LocalDate.now().atStartOfDay());
-        if (date.isBefore(LocalDate.now().atStartOfDay())) {
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "startDate cannot be before the start of the current day");
-        }
-    }
     private void validateEndDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endDate cannot be before the start of the current day");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endDate cannot be before startDate");
         }
     }
 }
