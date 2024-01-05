@@ -76,7 +76,10 @@ public class EventService {
     }
 
     private void validateStartDate(LocalDateTime date) {
+        System.out.println(date);
+        System.out.println(LocalDate.now().atStartOfDay());
         if (date.isBefore(LocalDate.now().atStartOfDay())) {
+
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "startDate cannot be before the start of the current day");
         }
     }
