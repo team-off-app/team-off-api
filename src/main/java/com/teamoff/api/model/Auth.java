@@ -1,6 +1,5 @@
 package com.teamoff.api.model;
 
-import com.teamoff.api.dto.request.UserAuthRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

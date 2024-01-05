@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -69,9 +68,15 @@ public class TeamService {
     public User removeUserToTeam(UUID id, TeamUserRequestDTO data) {
         Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Team with id " + id + " not found"));
         User user = userRepository.findById(UUID.fromString(data.userId())).orElseThrow(() -> new UserNotFoundException("User with id " + data.userId() + " not found"));
-        if (!user.getTeams().contains(team)) throw new UserNotFoundException("User is already not in the team");
+        validadeUserNotInTeam(user, team);
         user.getTeams().remove(team);
         userRepository.save(user);
         return user;
+    }
+
+    private void validadeUserNotInTeam(User user, Team team){
+        if (!user.getTeams().contains(team))
+            throw new UserNotFoundException("User is not in the team");
+
     }
 }

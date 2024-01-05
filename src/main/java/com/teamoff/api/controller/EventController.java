@@ -1,6 +1,5 @@
 package com.teamoff.api.controller;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.teamoff.api.dto.request.EventRequestDTO;
 import com.teamoff.api.model.Event;
 import com.teamoff.api.service.EventService;
@@ -10,15 +9,10 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -55,7 +49,7 @@ public class EventController {
     @Operation(summary = "Delete a event by its ID")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteById (@PathVariable UUID id ) {
-       eventService.deleteEventById(id);
+    public void deleteById(@PathVariable UUID id) {
+        eventService.deleteEventById(id);
     }
 }

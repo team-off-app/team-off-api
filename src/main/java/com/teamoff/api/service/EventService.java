@@ -8,15 +8,12 @@ import com.teamoff.api.model.Event;
 import com.teamoff.api.model.User;
 import com.teamoff.api.repository.EventRepository;
 import com.teamoff.api.repository.UserRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -47,7 +44,6 @@ public class EventService {
 
     public List<UserEventsDTO> groupEventsByUser(List<Event> events, String userId) {
         Map<UUID, UserEventsDTO> userEventMap = new HashMap<>();
-
         events.forEach(event -> {
                     User user = event.getUser();
                     UserEventsDTO userEventsDTO = userEventMap.get(user.getId());
