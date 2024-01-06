@@ -52,9 +52,10 @@ public class TeamService {
 
     public List<UserEventsDTO> getTeamEvents(UUID id, LocalDateTime startDate, LocalDateTime endDate, String token) {
         Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException("Team with id " + id + " not found"));
+        List<User> allUsersFromTeam = userRepository.findAllUsersInTeam(team);
         String userId = tokenService.getClaim(token, "user_id");
         System.out.println("StartDate: " + startDate + " | EndDate: " + endDate);
-        return eventService.groupEventsByUser(eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate), userId);
+        return eventService.groupEventsByUser(allUsersFromTeam, eventRepository.findAllTeamEventsBetweenDates(team, startDate, endDate), userId);
     }
 
     public User addUserToTeam(UUID id, TeamUserRequestDTO data) {

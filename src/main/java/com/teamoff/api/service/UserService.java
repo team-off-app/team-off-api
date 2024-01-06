@@ -43,8 +43,8 @@ public class UserService {
     }
 
     public List<UserEventsDTO> getUsersEvents(LocalDateTime startDate, LocalDateTime endDate, String token) {
-        String userId = tokenService.getClaim(token, "user_id");
-        return eventService.groupEventsByUser(eventRepository.findAllEventsBetweenDates(startDate, endDate), userId);
-
+        String loggedUserID = tokenService.getClaim(token, "user_id");
+        List<User> allUsers = userRepository.findAll();
+        return eventService.groupEventsByUser(allUsers, eventRepository.findAllEventsBetweenDates(startDate, endDate), loggedUserID);
     }
 }

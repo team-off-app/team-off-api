@@ -26,7 +26,7 @@ public class Auth implements UserDetails {
     private String login;
     @Column(nullable = false)
     private String password;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
 

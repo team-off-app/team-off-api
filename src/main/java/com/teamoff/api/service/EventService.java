@@ -42,25 +42,22 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public List<UserEventsDTO> groupEventsByUser(List<Event> events, String userId) {
+    public List<UserEventsDTO> groupEventsByUser(List<User> users, List<Event> events, String loggedUserId) {
         Map<UUID, UserEventsDTO> userEventMap = new HashMap<>();
-        events.forEach(event -> {
-                    User user = event.getUser();
-                    UserEventsDTO userEventsDTO = userEventMap.get(user.getId());
-                    if (userEventsDTO == null) {
-                        userEventsDTO = new UserEventsDTO(user);
-                        userEventsDTO.setEvents(new ArrayList<>());
-                        userEventMap.put(user.getId(), userEventsDTO);
-                    }
-                    EventResponseDTO eventResponseDTO = new EventResponseDTO(event);
-                    userEventsDTO.getEvents().add(eventResponseDTO);
-                }
-        );
+        for (User user : users) {
+            UserEventsDTO userEventsDTO = new UserEventsDTO(user);
+            userEventsDTO.setEvents(new ArrayList<>());
+            events.stream()
+                    .filter(event -> event.getUser().equals(user))
+                    .map(EventResponseDTO::new)
+                    .forEach(userEventsDTO.getEvents()::add);
 
-        List<UserEventsDTO> result = new ArrayList<>(userEventMap.values());
-        if (!userId.isEmpty()) {
-            result.sort(Comparator.comparingInt(u -> u.getId().toString().equals(userId) ? -1 : 0));
+            userEventMap.put(user.getId(), userEventsDTO);
         }
+
+        List<UserEventsDTO> result = new LinkedList<>(userEventMap.values());
+        result.sort(Comparator.comparing((UserEventsDTO userEventsDTO) -> userEventsDTO.isLoggedUser(UUID.fromString(loggedUserId)))
+                .thenComparing(UserEventsDTO::hasEvents, Comparator.reverseOrder()));
 
         return result;
     }

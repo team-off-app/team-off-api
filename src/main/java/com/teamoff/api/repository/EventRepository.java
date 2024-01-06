@@ -19,7 +19,7 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
                                           @Param("endDate") LocalDateTime endDate);
 
     @Query("Select e From Event e " +
-            "Join User u on e.user.id = u.id " +
+            "Join Fetch User u on e.user.id = u.id " +
             "Where :team_id MEMBER OF u.teams " +
             "And CAST(e.startDate AS DATE) <= CAST(:endDate AS DATE) " +
             "And CAST(e.endDate AS DATE) >= CAST(:startDate AS DATE) " +

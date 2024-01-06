@@ -4,6 +4,7 @@ import com.teamoff.api.model.Team;
 import com.teamoff.api.model.User;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -21,5 +22,13 @@ public class UserEventsDTO {
         this.name = user.getName();
         this.photoUrl = user.getPhotoUrl();
         this.teams = user.getTeams();
+    }
+
+    public boolean hasEvents(){
+        return !events.isEmpty();
+    }
+
+    public int isLoggedUser(UUID id){
+        return this.id.equals(id) ? -1 : 0;
     }
 }
