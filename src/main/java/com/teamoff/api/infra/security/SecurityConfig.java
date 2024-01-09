@@ -51,8 +51,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers(HttpMethod.POST, "/api/login").permitAll();
-                    req.requestMatchers(HttpMethod.POST, "/api/users").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/users").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/").permitAll();

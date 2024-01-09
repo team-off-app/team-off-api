@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -36,7 +36,7 @@ public class UserController {
     @Transactional
     public ResponseEntity<?> create(@RequestBody @Valid UserAuthRequestDTO data, UriComponentsBuilder uriBuilder) {
         User user = userService.createUser(data);
-        Auth auth = authService.createAuth(data, user);
+        authService.createAuth(data, user);
         URI uri = uriBuilder.path("/api/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
     }

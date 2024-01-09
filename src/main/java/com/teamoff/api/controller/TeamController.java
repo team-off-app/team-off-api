@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/team")
+@RequestMapping("/team")
 public class TeamController {
 
     private final TeamService teamService;
