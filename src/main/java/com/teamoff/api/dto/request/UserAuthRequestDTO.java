@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 public record UserAuthRequestDTO(
         @NotBlank
         String name,
-        @NotBlank
         String photoUrl,
         @Email
         String login,
