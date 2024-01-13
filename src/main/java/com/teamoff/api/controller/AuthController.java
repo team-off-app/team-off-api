@@ -33,4 +33,9 @@ public class AuthController {
         return ResponseEntity.ok(new TokenResponseDTO(tokenJWT));
     }
 
+    @GetMapping("/validate")
+    public ResponseEntity<Object> validate(){
+        return ResponseEntity.ok().build();
+    }
+
 }
